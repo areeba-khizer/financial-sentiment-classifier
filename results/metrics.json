@@ -1,0 +1,46 @@
+{
+  "run_id": "73a59679b13d45148b97ec60e95504af",
+  "params": {
+    "base_model": "distilbert-base-uncased",
+    "dataset_source": "ChanceFocus/flare-fpb",
+    "epochs": 4
+  },
+  "test_metrics": {
+    "test_accuracy": 0.8577319587628865,
+    "test_f1_macro": 0.8518141447900057,
+    "test_f1_weighted": 0.8579830262727979
+  },
+  "classification_report": {
+    "negative": {
+      "precision": 0.8524590163934426,
+      "recall": 0.896551724137931,
+      "f1-score": 0.8739495798319328,
+      "support": 116.0
+    },
+    "neutral": {
+      "precision": 0.892226148409894,
+      "recall": 0.8752166377816292,
+      "f1-score": 0.8836395450568679,
+      "support": 577.0
+    },
+    "positive": {
+      "precision": 0.7907801418439716,
+      "recall": 0.8050541516245487,
+      "f1-score": 0.7978533094812165,
+      "support": 277.0
+    },
+    "accuracy": 0.8577319587628865,
+    "macro avg": {
+      "precision": 0.8451551022157694,
+      "recall": 0.8589408378480363,
+      "f1-score": 0.8518141447900057,
+      "support": 970.0
+    },
+    "weighted avg": {
+      "precision": 0.8585008585824003,
+      "recall": 0.8577319587628865,
+      "f1-score": 0.8579830262727979,
+      "support": 970.0
+    }
+  }
+}

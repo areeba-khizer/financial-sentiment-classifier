@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# ML / experiment artifacts
+mlruns/
+mlartifacts/
+mlflow.db
+models/*/
+!models/.gitkeep
+*.bin
+*.safetensors
+*.pt
+*.ckpt
+data/raw/
+.cache/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
