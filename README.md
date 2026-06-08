@@ -20,6 +20,33 @@ REST API with batch support.
 - ✅ **Tested** — API contract covered by `pytest` using a stubbed model, so
   tests run without GPU or trained weights.
 
+## Architecture
+
+```mermaid
+flowchart LR
+    subgraph Training["🛠️ Training pipeline"]
+        DS["Financial PhraseBank<br/>(~4.8k sentences)"] --> TOK["DistilBERT<br/>tokenizer"]
+        TOK --> FT["Fine-tune<br/>DistilBERT"]
+        FT --> EVAL["Evaluate<br/>(accuracy / F1 / confusion matrix)"]
+        FT --> ART["Saved model<br/>+ tokenizer"]
+        EVAL -. logs params, metrics, artifacts .-> ML[("MLflow")]
+        FT -.-> ML
+    end
+
+    subgraph Serving["⚡ Serving"]
+        ART --> CLF["SentimentClassifier<br/>(batched inference)"]
+        CLF --> API["FastAPI<br/>/predict · /health · /labels"]
+    end
+
+    USER(["Client"]) -- "POST /predict<br/>{texts: [...]}" --> API
+    API -- "labels + probabilities" --> USER
+```
+
+The training pipeline ([`src/train.py`](src/train.py)) fine-tunes and evaluates
+the model while logging everything to MLflow; the saved artifact is loaded once
+by the serving layer ([`src/predict.py`](src/predict.py)) and exposed over HTTP
+([`app/main.py`](app/main.py)).
+
 ## Project layout
 
 ```
@@ -118,8 +145,11 @@ sentences):
 | neutral | 0.892 | 0.875 | 0.884 | 577 |
 | positive | 0.791 | 0.805 | 0.798 | 277 |
 
-Full metrics are tracked in [`results/metrics.json`](results/metrics.json) and
-the confusion matrix in [`results/confusion_matrix.png`](results/confusion_matrix.png).
+Full metrics are tracked in [`results/metrics.json`](results/metrics.json).
+
+<p align="center">
+  <img src="results/confusion_matrix.png" alt="Confusion matrix on the test set" width="460">
+</p>
 
 > Note: trained model weights are not committed (they're large and
 > reproducible). Run `python -m src.train` to regenerate them locally.
