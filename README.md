@@ -1,5 +1,7 @@
 # Financial News Sentiment Classifier
 
+[![CI](https://github.com/areeba-khizer/financial-sentiment-classifier/actions/workflows/ci.yml/badge.svg)](https://github.com/areeba-khizer/financial-sentiment-classifier/actions/workflows/ci.yml)
+
 Fine-tuned **DistilBERT** that classifies financial news sentences as
 **positive**, **negative**, or **neutral**. The project covers the full
 applied-NLP workflow: data preparation, fine-tuning a transformer, tracking
@@ -127,6 +129,21 @@ the confusion matrix in [`results/confusion_matrix.png`](results/confusion_matri
 ```bash
 pytest -q
 ```
+
+Tests also run automatically on every push and pull request via
+[GitHub Actions](.github/workflows/ci.yml).
+
+## Run with Docker
+
+The image bundles the API and its dependencies; mount your trained model at
+runtime (weights aren't baked in, since they're large and reproducible):
+
+```bash
+docker build -t financial-sentiment .
+docker run --rm -p 8000:8000 -v "$(pwd)/models:/app/models:ro" financial-sentiment
+```
+
+Then hit <http://127.0.0.1:8000/docs>.
 
 ## Dataset & license
 
